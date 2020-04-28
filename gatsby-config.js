@@ -1,9 +1,12 @@
+const siteMetadata = {
+  title: `The Localhost Blog`,
+    description: `This is a test blog for practice purposes.`,
+}
+
 module.exports = {
-  siteMetadata: {
-    title: `The Localhost Blog`,
-    description: `This is a test blog for practice purposes`,
-  },
+  siteMetadata: siteMetadata,
   plugins: [
+    `gatsby-plugin-styled-components`,
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
