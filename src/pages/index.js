@@ -1,19 +1,51 @@
+import { graphql, Link } from 'gatsby';
 import React from 'react';
 import styled from 'styled-components';
-import { useSiteMetadata } from '../hooks/useSiteMetadata';
+import { Layout } from '../components/Layout';
 
-console.log(styled);
+const IndexWrapper = styled.main``;
 
-const StyledH1= styled.h1`
-  color: rebeccapurple;  
-`
+const PostWrapper = styled.div``;
 
-export default () => {
-  const { title, description } = useSiteMetadata();
+
+export default ({ data }) => {
   return (
-    <div>
-      <StyledH1>{title}</StyledH1>
-      <p>{description}</p>
-    </div>
+    <>
+      <Layout>
+        <IndexWrapper>
+          {data.allMdx.nodes.map(({ excerpt, frontmatter, id, fields }) => (
+            <PostWrapper key={id}>
+              <Link to={fields.slug}>
+                <h1>{frontmatter.title}</h1>
+                <p>{frontmatter.date}</p>
+                <p>{excerpt}</p>
+              </Link>
+            </PostWrapper>
+          )
+          )}
+        </IndexWrapper>
+      </Layout>
+    </>
   );
 };
+
+export const query = graphql`
+  query SITE_INDEX_QUERY {
+    allMdx(
+      sort: { fields: [frontmatter___date], order: DESC }
+      filter: { frontmatter: { published: { eq: true } } }
+    ) {
+      nodes {
+        id
+        excerpt(pruneLength: 250)
+        frontmatter {
+          title
+          date
+        }
+        fields {
+          slug
+        }
+      }
+    }
+  }
+  `

@@ -1,9 +1,19 @@
-import { Link } from 'gatsby';
 import React from 'react';
+import styled from 'styled-components';
+import { useSiteMetadata } from '../hooks/useSiteMetadata';
+import { Header } from './Header';
 
-export const Header = ({ siteTitle, siteDescription }) => (
-  <Link to="/">
-    <h1>{siteTitle}</h1>
-    <p>{siteDescription}</p>
-  </Link>
-);
+const AppStyles = styled.main`
+  width: 800px;
+  margin: 0 auto;
+`;
+
+export const Layout = ({ children }) => {
+  const { title, description } = useSiteMetadata();
+  return (
+    <AppStyles>
+      <Header siteTitle={title} siteDescription={description} />
+      {children}
+    </AppStyles>
+  );
+};
